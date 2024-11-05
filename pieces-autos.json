@@ -22,7 +22,7 @@
         "nom": "Ampoule boîte à gants",
         "prix": 5.49,
         "categorie": "Optiques",
-        "images" : "images/ampoule-boite-a-gants.png",
+        "images" : "./images/ampoule-boite-a-gants.png",
         "description": "Pour y voir clair dans l'habitacle.",
         "disponibilité": false
     },
@@ -31,14 +31,14 @@
         "nom": "Liquide de frein",
         "prix": 9.60,
         "categorie": "Freinage",
-        "images" : "images/liquide-frein.png",
+        "images" : "./images/liquide-frein.png",
         "disponibilité": true
     },
     {
         "id": 5,
         "nom": "Balai d'essuie-glace",
         "prix": 29.10,
-        "images": "images/balai-essuie-glace.png",
+        "images": "./images/balai-essuie-glace.png",
         "description": "Performances d'essuyage au top ! Longueur: 550mm.",
         "disponibilité": true
     }
