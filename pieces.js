@@ -60,18 +60,18 @@ for (let i = 0; i < pieces.length; i++) {
     nomElement.innerText = pieces[i].nom;
 
     const prixElement = document.createElement('p');
-   prixElement.innerText = 'Prix: ' + pieces[i].prix + 'euros';
-   //autre solution pour prix qui là trie les prix inférieur a 35 euros
-//prixElement.innertext = `Prix: ${article.prix} euros (${article.prix <35 ? 'moins cher' : 'plus cher'})`;
+   prixElement.innerText = 'Prix: ' + pieces[i].prix + '€';
+   //autre solution pour prix qui là trie les prix inférieur a 35 euros, on utilise 
+//prixElement.innertext = `Prix: ${article.prix} euros (${article.prix <35 ? '€' : '€€€'})`;
 
     const categoriesElement = document.createElement('p');
     categoriesElement.innerText = pieces[i].categorie;
 
     //ensuite on ajoute les éléments à la page en les rattachant a leur parent
-  //on rattache la balise articel à la section Fiches
+  //on rattache la balise article à la section Fiches
   sectionFiches.appendChild(pieceElement);
   // on rattache ensuite l'image à pieceElement (la balise article)
-  pieceElement.appendChild(imageElement);
+    pieceElement.appendChild(imageElement);
     //on rattache le nom à pieceElement
     pieceElement.appendChild(nomElement);
     //on rattache le prix à pieceElement
@@ -80,12 +80,246 @@ for (let i = 0; i < pieces.length; i++) {
     pieceElement.appendChild(categoriesElement);
     //console.log(pieces[i], );
 }
-}
+};
 //on appelle la fonction afficherPieces pour afficher les fiches produits sur la page
 afficherPieces(pieces);
 
-// afficher les fiches grâce a la boucle for
-// for (let i = 0; i < pieces.length; i++ {
-//     pour ce faire on va simplement ajouter cette boucle et lui faire entourer le code que j'ai générer plus haut pour afficher les fiches produits sur la page web, pas besoin de changer le code que j'ai déjà écrit ci-dessus, il suffit de l'entourer avec la boucle for
+//ensuite réordonner les fiches grâce à la méthode sort() qui permet de trier les éléments d'un tableau selon un critère donné
+// const boutonTrier = documentQuerySelector(".btn-trier")
+// boutonTrier.addEventListener("click", function () {
+//   // on va réordonner le éléments de la liste en fonction de leur prix
+//   //pour cela on utilise sort qui prend en argument une nouvelle fonction
+//   //nous déclarons cell-ci a l'intérieru des parenthèses de sort sans lui donner de nom (c'est donc une fonction anonyme), (elle sera appelée par sort pour comparer les deux éléments entre eux) (Voici un extrait de code qui représente la déclaration d'une fonction anonyme au moment de l'appel de la fonction sort :  pieces.sort(function() {..(ici on écrit le code qui sera executé)..., dans le cas de la  méthode sort la fonction en paramètre de sort prend deux argument qu'il faudra comparer pour dire lequel sera rangé avant l'autre dans la liste réordonnée finale. Traditionnellement on nomme ces deux paramètres (ouarguments) a et b...}))
+//   //la fonction prend deux arguments a et b qui sont les éléments du tableau à comparer
+//   //la fonction retourne un nombre négatif si a doit être placé avant b, un nombre positif si b doit être placé avant a et 0 si les deux éléments sont équivalents (donc si ils ont le même prix) (c'est la fonction de comparaison qui est passée en argument à la méthode sort) 
+//   pieces.sort(function (a, b) {
+//     //on compare les prix des deux éléments a et b
+//     //on retourne un nombre négatif si a doit être placé avant b
+//     //on retourne un nombre positif si b doit être placé avant a
+//     //on retourne 0 si les deux éléments ont le même prix
+//     return a.prix - b.prix;
+//   });
+console.log(pieces)
+// })
+/*****Code complet de l'exemple avec la méthode (fonction) sort :*/
+// const boutonTrier = document.querySelector(".btn-trier")
 
-//ensuite 
+// boutonTrier.addEventListener("click", function () {
+//   const piecesOrdonnees = Array.from(pieces);  // ici on copie le tableau (array) pieces avec la méthode Array.from().Créer une copie permet de ne pas toucher au liste de la page afin que les autres trier et filtre fonctionnent correctment.,Avec la méthode Array.from il faut mettre entre les parenthèse le nom du tableu que l'on veux copier)
+//   piecesOrdonnees.sort(function (a, b) {   // on appel la fonction (méthode sort, qui prend en parammètre une fonction anonyme avec deux paramètre a et b, représentant deux élémnts de la liste a comparer)
+//     return a.prix - b.prix;      // Cette fonction anonyme retourne un prix qui est, ici, calculé à partir de la difference de prix donc a - b (return pourrait vouloir dire =)
+//   })
+// console.log(piecesOrdonnees);
+// });
+
+//Filtrer les éléménts de la liste grâce à la fonction filter
+//maintenant nous allons filtre les pièces non abordables
+//pour cela nous allons utiliser la méthode filter qui permet de filtrer les éléments d'un tableau selon un critère donné et de retourner un nouveau tableau contenant les éléments filtrés (la méthode filter prend en argument une fonction qui sera appelée pour chaque élément du tableau, si la fonction retourne true alors l'élément est ajouté au tableau filtré, si la fonction retourne false alors l'élément est ignoré) (Voici un extrait de code qui représente la déclaration d'une fonction anonyme au moment de l'appel de la fonction filter :  pieces.filter(function() {..(ici on écrit le code qui sera executé)..., dans le cas de la  méthode filter la fonction en paramètre de filter prend un argument qui est l'élément du tableau à tester pour savoir s'il doit être ajouté au tableau filtré ou non. Traditionnellement on nomme cet argument element...})) 
+//la fonction prend un argument element qui est l'élément du tableau à tester
+//la fonction retourne true si l'élément doit être ajouté au tableau filtré
+//la fonction retourne false si l'élément doit être ignoré
+//la méthode filter retourne un nouveau tableau contenant les éléments filtrés
+const boutonFilter = document.querySelector(".btn-filter")
+
+boutonFilter.addEventListener("click", function () {
+  const piecesFiltrees = pieces.filter(function(piece) {
+    return piece.prix <= 35;
+  })
+  console.log(piecesFiltrees);
+  
+})
+
+//button trier par prix décroissant
+//je recupère une reference au bouton qui est donc btn-decroissant
+//j'attache un eventListener sur le click sur ce bouton, puis je let ma logique de trie en utilisant la fonction sort()
+const boutonDecroissant = document.querySelector('.btn-decroissant')
+
+boutonDecroissant.addEventListener("click", function () {
+  const pieceDecroissant = Array.from(pieces);
+  pieceDecroissant.sort(function (a,b) {
+    return b.prix - a.prix;
+  })
+  console.log(pieceDecroissant);
+})
+
+//button filtrer les pieces sans description
+//le recupère la référence de ce boutton donc: btn-nodescripton
+//j'ajoute un adEventListener sur le clique
+//puis je les fitre avec filter()
+const boutonSansDescription = document.querySelector('.btn-nodescription')
+
+boutonSansDescription.addEventListener('click', function() {
+  const piecesFiltrees = pieces.description
+  console.log(piecesFiltrees);
+  
+})
+
+//Maintenat on va créer un tableau qui contiendra que les nom de nos pieces, on utilise pour cela la fonction map
+//deux façon de l'écrire 
+//pour utiliser la fonction map on ecrit .map puis on lui donne en argument une focntion anonyme qu'on appel pour chaque élements de la liste d'origine (ici piece. donc on écrire map(function(piece)))
+//on peux demander a la fonction anonyme de calculé une nouvelle valeur, par exemple en ecrivant map(function(piece) {
+//return piece.prix * 2;}
+//on peux aussi lui demander de nous retourner le nom de nos pices on ecrira :
+//map(function(pieces)) {
+//return pieces.nom} (les données noms viennent du tableau piece du document json)
+//on peut aussi ecrire notre code plus simplement:
+//(piece) => pieces.nom;   ceci est une fonction lambda.LA fonction lambda va faire bien plus que de simplement retourner un nom d'une proprié d'un objet, on peut 
+//Pour recupérer les noms de nos pieces et se creer un tableau qui contient le nom de chacunes de nos pieces on écrira :
+//const noms = pieces.map(piece => piece.nom);
+//et unn console.log pour vérifier tout cela
+//console.log(noms);
+
+
+
+//Maintenant voyons comment enlever des élements de notre liste, supprimons les pieces non abordables avec la méthode splice ()
+//pour cela on utilisera un boucle for, et on partira de la fin du tableau au début de celui-ci, Sans cela certains éléments ne seraitent pas testés, à cause  du décalage que provoquerait la suppression des elements indésirables (ceux que l on veux supprimer)
+//la fonction splice prend en argument deux valeurs : 
+//l'indice a partir duquel supprimer les éléments et la quantité d'éléments à supprimer
+//nous nous servirons donc de l'indice i comme premier argument et supprimerons toujours un seul éléments à la fois
+
+const noms = pieces.map(piece => piece.nom);
+for(let i = pieces.length -1; i >= 0; i--) {
+  if(pieces[i].prix > 35) {
+    noms.splice(i,1)
+  }
+}
+console.log(noms)
+
+//Maintenant que nous avons la liste des noms des pieces abordable nous allons les afficher dans la page de notre site
+//pour cela on reprend ce que nous avons fait plus haut et l'on crée des élémnts dans le DOM
+//Création de la list
+//Création de la liste
+const abordablesElements = document.createElement('ul');
+//Ajout de chaque nom à la liste
+for(let i=0; i < noms.length ; i++){
+   const nomElement = document.createElement('li');
+   nomElement.innerText = noms[i];
+   abordablesElements.appendChild(nomElement)
+}
+// Ajout de l'en-tête puis de la liste au bloc résultats filtres
+document.querySelector('.abordables')
+   .appendChild(abordablesElements)
+console.log(abordablesElements);
+
+
+//Maintenant affichon une liste des pièces disponibles a coté des pièces abordables
+//pour cela, créons un élémént html avec la class pieces disponibles, puis 
+//reprenons la logique codessus
+// const piecesDisponibles = document.createElement('div')
+// piecesDisponibles.classList.add('PiecesDisponibles');
+// const listePiecesDisponibles = document.createElement('ul');
+// //trions les pieces disponibles avec splice
+// const piecesRestantes = pieces.map(piece => piece.disponibilite);
+// for(let i = pieces.length -1; i <=0; i--) {
+//   if(pieces[i].disponibilite = false) {
+//     piecesRestantes.splice(i,1)
+//   }
+// }
+// console.log(piecesRestantes);
+
+// //je crée la list en ajoutant les élémts directment dans le DOM avec une boucle for
+// for(let i = 0; i <disponibilte.length; i++) {
+//   const nomPieceDisponible = document.createElement('li');
+//   nomPieceDisponible.innerHTML = piecesRestantes[i]
+//   nomPieceDisponible.appendChild(listePiecesDisponibles)
+// }
+
+// piecesDisponibles.appendChild(listePiecesDisponibles)
+// document.querySelector('.fiches')
+// fiches.appendChild(piecesDisponibles)
+//***coorection de ajout des pieces disponibles*** */
+
+//cree deux liste, la première garde ubniquement les nom et la deuxième garde uniquemen le prix
+const nomsDisponibles = pieces.map(piece => piece.nom)
+const prixDisponibles = pieces.map(piece => piece.prix)
+//ensuite ajoutons une boucle for qui par de la fin du tableau pieces, si la disponiblité de la pices est sur false alors supprimer le nom et le prix des deux liste crées précédemment
+for(let i = pieces.length -1; i >= 0; i--) {
+  if (pieces[i].disponibilte === false) {
+  nomsDisponibles.splice(i,1)
+  prixDisponibles.splice(i,1)
+}
+}
+const disponiblesElements = document.createElement('ul');
+
+for(let i = 0; i < nomsDisponibles.length; i++) {
+  const nomElement = document.createElement('li');
+  nomElement.innerText = `${nomsDisponibles[i]} - ${prixDisponibles[i]} €`
+  disponiblesElements.appendChild(nomElement)
+}
+document.querySelector('.disponible').appendChild(disponiblesElements)
+
+console.log(disponiblesElements);
+/*********************************réécriture du code pour rendre la page interactive********************************************************************************************************** */
+//rendons la page web plus interactive en modifiant ls élémets du DOM avec innerHTML et innerText
+//efface le contenu e la balise body et donc l'écran:
+document.querySelector(".fiches").innerHTML = '';
+
+//récupération des pièces depuis le fichioer json, comme nous l'avons déjà déclaré plus haut dans le code on ne le redéclare pas mais je garde pour mieux comprendre commet on regenère le contenude notre balise
+//const pieces = await fetch("pieces-autos.json");
+
+//fonction qui génère toute la page web et qui donc sera réutilisable par la suite en fonction des interaction avec l'utilisateur
+
+function genererPieces(pieces) {
+  for (let i = 0; i < pieces.length; i++) {
+    //création d'une balise dédiée à une piece auto
+    const pieceElement = document.createElement("article");
+    //on crée l'élément img
+    const imageElement = document.createElement("img");
+    //On accède à l'indice i de la liste pieces pour configurer la source de l'image
+    imageElement.src = pieces[i].image;
+    //On rattache l'image ) pieceElement (la balise aricle, qui est donc son parent)
+    pieceElement.appendChild(imageElement);
+      //idem pour le nom, le prix et la catégorie 
+    const nomElement = document.createElement('h2');
+    nomElement.innerText = pieces[i].nom;
+    pieceElement.appendChild(nomElement);
+
+    const prixElement = document.createElement('p');
+      prixElement.innerText = pieces[i].prix;
+      pieceElement.appendChild(prixElement)
+
+    const categorieElement = document.createElement('p');
+    categorieElement.innerText = pieces[i].categorie;
+    pieceElement.appendChild(categorieElement)
+  }
+}
+//premier affichage de la page
+genererPieces()
+
+ // Ajout du listener pour trier les pièces par ordre de prix croissant
+const boutonTrier = document.querySelector(".btn-trier");
+boutonTrier.addEventListener("click", function () {
+   const piecesOrdonnees = Array.from(pieces)
+   piecesOrdonnees.sort(function (a, b) {
+       return b.prix - a.prix;
+   });
+  // Effacement de l'écran et regénération de la page
+  document.querySelector(".fiches").innerHTML = "";
+  genererPieces(piecesOrdonnees);
+});
+ 
+// Ajout du listener pour filtrer les pièces non abordables
+const boutonFiltrer = document.querySelector(".btn-filtrer");
+boutonFiltrer.addEventListener("click", function () {
+   const piecesFiltrees = pieces.filter(function (piece) {
+       return piece.disponibilite;
+   });
+   // Effacement de l'écran et regénération de la page avec les pièces filtrées uniquement
+  document.querySelector(".fiches").innerHTML = "";
+  genererPieces(piecesFiltrees);
+});
+/**********************c'est ce que je dois faire pour le mode edition et les differntes modales*************************************************** */
+
+//ensuite code de la barre de linput de type range
+
+const inputPrixMax = document.querySelector('#prix-max')
+inputPrixMax.addEventListener('input', function(){
+  //ici, dans le corps de la fonction callback on fitre la liste des pieces avec la fonction filter
+  const piecesFiltrees = pieces.filter(function(piece) {
+    return piece.prix <= inputPrixMax.ariaValueMax;  // ici on met la condition 
+  })
+  //on efface ensuite l'écran et on fait appel a la fonction genererPiece pour afficher les fiches produit
+  document.querySelector(".fiches").innerHTML = ""
+  genererPieces(piecesFiltrees);
+})
+//si tout se passe bien, lorsque que le utilisateur fait glisser le curseur sur la barre les pieces s'ffichent et s'effacent durectement en fonction de leur filtrag
