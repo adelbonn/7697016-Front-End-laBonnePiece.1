@@ -229,16 +229,18 @@ console.log(abordablesElements);
 // fiches.appendChild(piecesDisponibles)
 //***coorection de ajout des pieces disponibles*** */
 
-//cree deux liste, la première garde ubniquement les nom et la deuxième garde uniquemen le prix
+//On crée deux listes avec la méthode (fonction) .map(), la première garde uniquement les noms et la deuxième garde uniquemen le prix
 const nomsDisponibles = pieces.map(piece => piece.nom)
 const prixDisponibles = pieces.map(piece => piece.prix)
-//ensuite ajoutons une boucle for qui par de la fin du tableau pieces, si la disponiblité de la pices est sur false alors supprimer le nom et le prix des deux liste crées précédemment
+//ensuite ajoutons une boucle for qui par de la fin du tableau pieces, si la disponiblité de la pièce est sur false alors supprimer le nom et le prix des deux listes crées précédemment
+//on utilise ici .splice() afin de supprimer des éléments d'un tableau, cette méthode prend en paramètre deux arguments, l'indice de l'élément à supprimer et la quantité d'éléments à supprimer 
 for(let i = pieces.length -1; i >= 0; i--) {
-  if (pieces[i].disponibilte === false) {
+  if (pieces[i].disponibilite === false) {
   nomsDisponibles.splice(i,1)
   prixDisponibles.splice(i,1)
 }
 }
+//ensuite ajoutons une boucle for qui va ajouter à la liste disponiblesElements tous les éléments de nomsDisponibles et prixDisponibles, ainsi que leur prix, pour cela on crée un nouvel élément li et on ajoute le nom et le prix de chaque élément de nomsDisponibles et prixDisponibles
 const disponiblesElements = document.createElement('ul');
 
 for(let i = 0; i < nomsDisponibles.length; i++) {
@@ -246,20 +248,33 @@ for(let i = 0; i < nomsDisponibles.length; i++) {
   nomElement.innerText = `${nomsDisponibles[i]} - ${prixDisponibles[i]} €`
   disponiblesElements.appendChild(nomElement)
 }
+// et enfin on ajoute la liste disponiblesElements en tant que fils de la balise .disponible
 document.querySelector('.disponible').appendChild(disponiblesElements)
 
-console.log(disponiblesElements);
+console.log(disponiblesElements); //ici on affiche la liste des éléments disponibles dans la console pour vérifier que tout s'est bien passé
+
+
 /*********************************réécriture du code pour rendre la page interactive********************************************************************************************************** */
-//rendons la page web plus interactive en modifiant ls élémets du DOM avec innerHTML et innerText
-//efface le contenu e la balise body et donc l'écran:
-document.querySelector(".fiches").innerHTML = '';
 
-//récupération des pièces depuis le fichioer json, comme nous l'avons déjà déclaré plus haut dans le code on ne le redéclare pas mais je garde pour mieux comprendre commet on regenère le contenude notre balise
-//const pieces = await fetch("pieces-autos.json");
+//nous allons reprendre le code précédent et le modifier pour rendre la page interactive 
+//rendons la page web plus interactive en modifiant les éléments du DOM avec innerHTML et innerText
+//innerHTML='' efface le contenu de la balise body et donc l'écran, le fait de supprimer le contenu de la balise body permet de supprimer tout le contenu de la page web, niveau performance cela est plus rapide que de supprimer chaque élément individuellement et de les reconstruire
+//document.querySelector(".fiches").innerHTML = '';
 
-//fonction qui génère toute la page web et qui donc sera réutilisable par la suite en fonction des interaction avec l'utilisateur
+//récupération des pièces depuis le fichier json, comme nous l'avons déjà déclaré plus haut dans le code on ne le redéclare pas mais je garde pour mieux comprendre comment on regenère le contenu de notre balise
+//const pieces = await fetch("pieces-autos.json"); //on recupere le contenu du fichier json
+//console.log(pieces);
+
+//On crée une fonction genererPieces() qui génère toute la page web et qui donc sera réutilisable par la suite en fonction des interactions avec l'utilisateur, ajouter une telle fonction permet de simplifier le code et de pouvoir modifier facilement la page web en fonction des interactions de l'utilisateur, par exemple si par la suite je veux ajouter une modale je pourrais simplement appeler cette fonction et ajouter la modale au contenu de la balise .fiches
 
 function genererPieces(pieces) {
+
+  //On récupère la balise .fiches et on l'assigne à une variable
+  const sectionFiches = document.querySelector(".fiches");
+  //on vide d'abord la balise .fiches
+  sectionFiches.innerHTML = "";
+  //On crée une balise article et on l'assigne à une variable, cette variable sera crée avec le corps de la boucle for ci-dessous
+  const pieceElement = document.createElement("article");
   for (let i = 0; i < pieces.length; i++) {
     //création d'une balise dédiée à une piece auto
     const pieceElement = document.createElement("article");
@@ -267,7 +282,7 @@ function genererPieces(pieces) {
     const imageElement = document.createElement("img");
     //On accède à l'indice i de la liste pieces pour configurer la source de l'image
     imageElement.src = pieces[i].image;
-    //On rattache l'image ) pieceElement (la balise aricle, qui est donc son parent)
+    //On rattache l'image ) pieceElement (la balise article, qui est donc son parent)
     pieceElement.appendChild(imageElement);
       //idem pour le nom, le prix et la catégorie 
     const nomElement = document.createElement('h2');
@@ -275,13 +290,14 @@ function genererPieces(pieces) {
     pieceElement.appendChild(nomElement);
 
     const prixElement = document.createElement('p');
-      prixElement.innerText = pieces[i].prix;
+      prixElement.innerText = `Prix: ${pieces[i].prix} €`;
       pieceElement.appendChild(prixElement)
 
     const categorieElement = document.createElement('p');
-    categorieElement.innerText = pieces[i].categorie;
+    categorieElement.innerText = ${pieces[i].categorie;
     pieceElement.appendChild(categorieElement)
   }
+  sectionFiches.appendChild(pieceElement);
 }
 //premier affichage de la page
 genererPieces()
