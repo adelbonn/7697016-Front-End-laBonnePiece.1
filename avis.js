@@ -1,4 +1,4 @@
-//CODE DU COURS D4OPENCLASSROOM  REALISER UNE PAGE WEB DYNAMIQEU AVEC JABVASCRIPT? PROJET FIL ROUGE LA BONNE PIEC
+//CODE DU COURS D4OPENCLASSROOM  REALISER UNE PAGE WEB DYNAMIQUE AVEC JABVASCRIPT? PROJET FIL ROUGE LA BONNE PIECE
 // export async function ajoutListenerAvis() {
 //     const piecesElements = document.querySelectorAll(".fiches article button");
 
@@ -11,7 +11,7 @@
 // }      
  
 
-//CODE AMELIORER PAS CASCED/CLAUDE3.5 (mieux car gère les erreurs) :
+//CODE AMELIORER PAR CASCADE/CLAUDE3.5 (mieux car gère les erreurs) :
 
 export function ajoutListenerAvis() {
     const piecesElements = document.querySelectorAll(".fiches article button");

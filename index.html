@@ -15,16 +15,17 @@
 			<!-- Menu de recherche -->
 			<section class="filtres">
 				<h3>Filtres</h3>
-				<button class="btn-trier">Trier par prix croissant</button>
+				<button class="btn-trier-croissant">Trier par prix croissant</button>
 				<br>
-				<button class="btn-filtrer">Filtrer les pièces non abordables</button>
+				<button class="btn-filtrer-abordables">Filtrer les pièces abordables</button>
 				<br>
-				<button class="btn-trier">Trier par prix décroissant</button>
+				<button class="btn-trier-decroissant">Trier par prix décroissant</button>
 				<br>
-				<button class="btn-trier">Filtrer les pièces sans description</button>
+				<button class="btn-filtrer-description">Filtrer les pièces sans description</button>
 				<br>
 			
-				<input type="range" id="prix-min" min="0" max="100" step="5" value="0">
+				<input type="range" id="prix-max" name="prix" min="0" max="100" step="5" value="0">
+				<label for="prix-max">Prix maximum : <span id="prix-max-value">60</span> €</label>
 			</section>
 
 			<!-- Fiches produits -->

@@ -2,38 +2,51 @@
 import { ajoutListenerAvis } from "./avis.js";
 
 /**
- * COMPARAISON DES APPROCHES ASYNCHRONES EN JAVASCRIPT
- * 
- * Approche .then() (avant) :
- * fetch("http://localhost:8081/pieces")
- *     .then(response => response.json())
- *     .then(pieces => {
- *         afficherPieces(pieces);
- *     });
- * 
- * Avantages de .then() :
- * - Bon pour des opérations en chaîne simple
- * - Utile pour le traitement parallèle avec Promise.all()
- * - Compatible avec les navigateurs plus anciens
- * 
- * Approche async/await (maintenant) :
- * - Plus facile à lire et à comprendre
- * - Meilleure gestion des erreurs avec try/catch
- * - Code plus linéaire et synchrone en apparence
- * - Attente explicite des résultats avec 'await'
+ * Fonction principale asynchrone qui gère le chargement et l'affichage des pièces
  */
+async function initialiserPieces() {
+    console.log("🚀 Démarrage initialiserPieces");
+    try {
+        // Chargement des données
+        const reponse = await fetch("http://localhost:8081/pieces");
+        if (!reponse.ok) {
+            throw new Error(`Erreur HTTP: ${reponse.status}`);
+        }
+        const pieces = await reponse.json();
+        console.log("📥 Données reçues de l'API:", pieces);
+        
+        // Initialisation de l'interface
+        afficherPieces(pieces);
+        console.log("🎯 Appel de afficherListesPieces");
+        afficherListesPieces(pieces);
+        initialiserBoutonsTri(pieces);
+        initialiserBoutonsFiltrage(pieces);
+        initialiserInputRange(pieces);
+        
+        // Ajout des listeners pour les avis
+        ajoutListenerAvis();
 
-// Fonction pour initialiser les boutons de tri
+    } catch (error) {
+        console.error("❌ Erreur lors du chargement des pièces:", error);
+        afficherMessageErreur("Désolé, une erreur est survenue lors du chargement des pièces. Veuillez réessayer plus tard.");
+    }
+}
+
+/**
+ * Fonction pour initialiser les boutons de tri
+ */
 function initialiserBoutonsTri(pieces) {
-    const boutonTrier = document.querySelector(".btn-trier");
-    if (boutonTrier) {
-        boutonTrier.addEventListener("click", () => {
+    // Tri par prix croissant
+    const boutonTrierCroissant = document.querySelector(".btn-trier-croissant");
+    if (boutonTrierCroissant) {
+        boutonTrierCroissant.addEventListener("click", () => {
             const piecesOrdonnees = Array.from(pieces).sort((a, b) => a.prix - b.prix);
             afficherPieces(piecesOrdonnees);
         });
     }
-//fonction pour trier les pieces par prix decroissant
-    const boutonTrierDecroissant = document.querySelector(".btn-decroissant");
+
+    // Tri par prix décroissant
+    const boutonTrierDecroissant = document.querySelector(".btn-trier-decroissant");
     if (boutonTrierDecroissant) {
         boutonTrierDecroissant.addEventListener("click", () => {
             const piecesOrdonnees = Array.from(pieces).sort((a, b) => b.prix - a.prix);
@@ -42,126 +55,68 @@ function initialiserBoutonsTri(pieces) {
     }
 }
 
-// Fonction pour initialiser les boutons de filtrage
+/**
+ * Fonction pour initialiser les boutons de filtrage
+ */
 function initialiserBoutonsFiltrage(pieces) {
-    const boutonFiltrer = document.querySelector(".btn-filtrer");
-    if (boutonFiltrer) {
-        boutonFiltrer.addEventListener("click", () => {
-            const piecesFiltrees = pieces.filter(piece => piece.prix <= 35);
-            afficherPieces(piecesFiltrees);
-        });
-    }
-//fonction pour filtrer les pieces sans description
-    const boutonFiltrerSansDescription = document.querySelector(".btn-nodescription");
-    if (boutonFiltrerSansDescription) {
-        boutonFiltrerSansDescription.addEventListener("click", () => {
-            const piecesSansDescription = pieces.filter(piece => !piece.description);
-            afficherPieces(piecesSansDescription);
-        });
-    }
-
-    const boutonFiltrerAbordables = document.querySelector(".btn-filter");
+    // Filtrer les pièces abordables (prix <= 35€)
+    const boutonFiltrerAbordables = document.querySelector(".btn-filtrer-abordables");
     if (boutonFiltrerAbordables) {
         boutonFiltrerAbordables.addEventListener("click", () => {
-            const piecesNonAbordables = pieces.filter(piece => piece.prix > 35);
-            afficherPieces(piecesNonAbordables);
-        });
-    }
-}
-
-// Fonction pour initialiser les listes spéciales
-function initialiserListesSpeciales(pieces) {
-    const boutonPrixAbordable = document.querySelector(".btn-filtrer-prix-abordable");
-    if (boutonPrixAbordable) {
-        boutonPrixAbordable.addEventListener("click", () => {
             const piecesFiltrees = pieces.filter(piece => piece.prix <= 35);
-            const nomsPiecesAbordables = piecesFiltrees.map(piece => piece.nom);
-            document.querySelector(".pieces-abordables").innerHTML = nomsPiecesAbordables.join(", ");
+            afficherPieces(piecesFiltrees);
+            afficherListePiecesAbordables(piecesFiltrees);
         });
     }
 
-    const boutonPiecesDispo = document.querySelector(".btn-filtrer-pieces-dispo");
-    if (boutonPiecesDispo) {
-        boutonPiecesDispo.addEventListener("click", () => {
-            const piecesFiltrees = pieces.filter(piece => piece.disponibilite);
-            const nomsPiecesDispo = piecesFiltrees.map(piece => piece.nom);
-            document.querySelector(".pieces-disponibles").innerHTML = nomsPiecesDispo.join(", ");
-        });
-    }
-}
-
-// Fonction pour initialiser l'input range
-function initialiserInputRange(pieces) {
-    const inputPrixMax = document.getElementById("prix-max");
-    if (inputPrixMax) {
-        inputPrixMax.addEventListener("input", () => {
-            const piecesFiltrees = pieces.filter(piece => piece.prix <= inputPrixMax.value);
+    // Filtrer les pièces sans description
+    const boutonFiltrerDescription = document.querySelector(".btn-filtrer-description");
+    if (boutonFiltrerDescription) {
+        boutonFiltrerDescription.addEventListener("click", () => {
+            const piecesFiltrees = pieces.filter(piece => !piece.description);
             afficherPieces(piecesFiltrees);
         });
     }
 }
 
-// Fonction pour afficher les listes de pièces disponibles
-function afficherListesPieces(pieces) {
-    // Création des listes
-    console.log("fonction afficherListesPieces");
-    console.log("pièces reçues :", pieces);
-    const nomsDisponibles = pieces.filter(piece => piece.disponibilite).map(piece => piece.nom);
-    const prixDisponibles = pieces.filter(piece => piece.disponibilite).map(piece => piece.prix);
-console.log("nomsDisponibles :", nomsDisponibles);
-console.log("prixDisponibles :", prixDisponibles);
+/**
+ * Fonction pour initialiser l'input range du prix maximum
+ */
+function initialiserInputRange(pieces) {
+    const inputPrixMax = document.getElementById("prix-max");
+    const prixMaxValue = document.getElementById("prix-max-value");
+    
+    if (inputPrixMax && prixMaxValue) {
+        // Initialiser la valeur maximum en fonction du prix le plus élevé
+        const prixMaximum = Math.max(...pieces.map(piece => piece.prix));
+        inputPrixMax.max = prixMaximum;
+        inputPrixMax.value = prixMaximum;
+        prixMaxValue.textContent = prixMaximum;
 
-    // Création de la liste HTML
-    const disponiblesElements = document.createElement("ul");
-    for (let i = 0; i < nomsDisponibles.length; i++) {
-        const nomElement = document.createElement('li');
-        nomElement.innerText = `${nomsDisponibles[i]} - ${prixDisponibles[i]} €`;
-        disponiblesElements.appendChild(nomElement);
-    }
-
-    // Ajout à la page
-    const conteneurDisponible = document.querySelector('.disponible');
-    console.log("conteneur trouvé :", conteneurDisponible);
-    if (conteneurDisponible) {
-        conteneurDisponible.innerHTML = ''; // Nettoyer le contenu existant
-        conteneurDisponible.appendChild(disponiblesElements);
-        console.log("liste ajoutée au conteneur", conteneurDisponible);
+        // Mettre à jour l'affichage lors du changement de valeur
+        inputPrixMax.addEventListener("input", () => {
+            const valeurActuelle = parseInt(inputPrixMax.value);
+            prixMaxValue.textContent = valeurActuelle;
+            const piecesFiltrees = pieces.filter(piece => piece.prix <= valeurActuelle);
+            afficherPieces(piecesFiltrees);
+        });
     }
 }
 
-// Fonction principale asynchrone qui gère le chargement et l'affichage des pièces
-async function initialiserPieces() {
-    console.log("🚀 Démarrage initialiserPieces");
-    try {
-        // Chargement des données
-        const reponse = await fetch("http://localhost:8081/pieces");
-        const pieces = await reponse.json();
-        console.log("📥 Données reçues de l'API:", pieces);
-        
-        afficherPieces(pieces);
-        afficherListesPieces(pieces);
-        
-        // Initialisation des différentes fonctionnalités
-        initialiserBoutonsTri(pieces);
-        initialiserBoutonsFiltrage(pieces);
-        initialiserListesSpeciales(pieces);
-        initialiserInputRange(pieces);
-        
-        // Ajout des listeners pour les avis
-        ajoutListenerAvis();
-
-    } catch (error) {
-        console.error("❌ Erreur lors du chargement des pièces:", error);
-    }
-}
-
-// Fonction d'affichage des pièces
+/**
+ * Fonction pour afficher les pièces dans la section fiches
+ */
 function afficherPieces(pieces) {
     const sectionFiches = document.querySelector(".fiches");
-    if (sectionFiches === null) return;
+    if (!sectionFiches) return;
     
     // Efface l'écran et affiche les nouvelles pièces
     sectionFiches.innerHTML = "";
+    
+    if (pieces.length === 0) {
+        sectionFiches.innerHTML = "<p>Aucune pièce ne correspond à vos critères</p>";
+        return;
+    }
     
     pieces.forEach(piece => {
         // Création de l'élément HTML pour chaque pièce
@@ -170,33 +125,108 @@ function afficherPieces(pieces) {
 
         const imageElement = document.createElement("img");
         imageElement.src = piece.image;
+        imageElement.alt = `Image de ${piece.nom}`;
 
         const nomElement = document.createElement("h2");
         nomElement.innerText = piece.nom;
 
         const prixElement = document.createElement("p");
-        prixElement.innerText = `Prix: ${piece.prix} € (${piece.prix < 35 ? "€" : "€€€"})`;
+        prixElement.innerText = `Prix: ${piece.prix} € ${piece.prix < 35 ? "(Abordable)" : ""}`;
 
-        const categoriesElement = document.createElement("p");
-        categoriesElement.innerText = piece.categorie;
+        const categorieElement = document.createElement("p");
+        categorieElement.innerText = `Catégorie: ${piece.categorie || "Non catégorisé"}`;
 
         const descriptionElement = document.createElement("p");
-        descriptionElement.innerText = piece.description || "Pas de description";
+        descriptionElement.innerText = piece.description || "Pas de description disponible";
 
+        const disponibiliteElement = document.createElement("p");
+        disponibiliteElement.innerText = piece.disponibilite ? "En stock" : "Rupture de stock";
+        disponibiliteElement.classList.add(piece.disponibilite ? "en-stock" : "rupture-stock");
+
+        // Assemblage de la fiche
         pieceElement.appendChild(imageElement);
         pieceElement.appendChild(nomElement);
         pieceElement.appendChild(prixElement);
-        pieceElement.appendChild(categoriesElement);
+        pieceElement.appendChild(categorieElement);
         pieceElement.appendChild(descriptionElement);
+        pieceElement.appendChild(disponibiliteElement);
 
-        sectionFiches.appendChild(pieceElement);
-
-        //Ajout des boutons des avis avec dat-id
+        // Ajout du bouton des avis
         const boutonAvis = document.createElement("button");
-        boutonAvis.textContent = "Afficher avis";
+        boutonAvis.textContent = "Afficher les avis";
         boutonAvis.dataset.id = piece.id;
         pieceElement.appendChild(boutonAvis);
+
+        sectionFiches.appendChild(pieceElement);
     });
+}
+
+/**
+ * Fonction pour afficher les listes de pièces disponibles et abordables
+ */
+function afficherListesPieces(pieces) {
+    console.log("Début afficherListesPieces");
+    console.log("Pièces reçues:", pieces);
+
+    // Liste des pièces disponibles
+    const piecesDisponibles = pieces.filter(piece => piece.disponibilite);
+    console.log("Pièces disponibles:", piecesDisponibles);
+    const listeDisponibles = document.createElement("ul");
+    piecesDisponibles.forEach(piece => {
+        const elementListe = document.createElement("li");
+        elementListe.innerText = `${piece.nom} - ${piece.prix} €`;
+        listeDisponibles.appendChild(elementListe);
+    });
+
+    // Mise à jour du conteneur des pièces disponibles
+    const conteneurDisponible = document.querySelector(".disponible");
+    console.log("Conteneur disponible trouvé:", conteneurDisponible);
+    if (conteneurDisponible) {
+        const ulDisponible = conteneurDisponible.querySelector("ul");
+        console.log("UL disponible trouvé:", ulDisponible);
+        if (ulDisponible) {
+            ulDisponible.innerHTML = "";
+            ulDisponible.appendChild(listeDisponibles);
+            console.log("Liste disponible ajoutée");
+        }
+    }
+
+    // Liste des pièces abordables
+    const piecesAbordables = pieces.filter(piece => piece.prix <= 35);
+    console.log("Pièces abordables:", piecesAbordables);
+    const listeAbordables = document.createElement("ul");
+    piecesAbordables.forEach(piece => {
+        const elementListe = document.createElement("li");
+        elementListe.innerText = `${piece.nom} - ${piece.prix} €`;
+        listeAbordables.appendChild(elementListe);
+    });
+
+    // Mise à jour du conteneur des pièces abordables
+    const conteneurAbordable = document.querySelector(".abordables");
+    console.log("Conteneur abordable trouvé:", conteneurAbordable);
+    if (conteneurAbordable) {
+        const ulAbordable = conteneurAbordable.querySelector("ul");
+        console.log("UL abordable trouvé:", ulAbordable);
+        if (ulAbordable) {
+            ulAbordable.innerHTML = "";
+            ulAbordable.appendChild(listeAbordables);
+            console.log("Liste abordable ajoutée");
+        }
+    }
+    console.log("Fin afficherListesPieces");
+}
+
+/**
+ * Fonction pour afficher un message d'erreur
+ */
+function afficherMessageErreur(message) {
+    const sectionFiches = document.querySelector(".fiches");
+    if (sectionFiches) {
+        sectionFiches.innerHTML = `
+            <div class="error-message">
+                ${message}
+            </div>`;
+    }
 }
 
 // Démarrage de l'application

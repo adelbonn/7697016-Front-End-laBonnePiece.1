@@ -1,0 +1,52 @@
+.avis-list {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.avis-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.avis-list li {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.avis-list li:last-child {
+    border-bottom: none;
+}
+
+.en-tete-avis {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.utilisateur {
+    font-weight: bold;
+    color: #333;
+}
+
+.etoiles {
+    color: #ffd700;
+}
+
+.commentaire {
+    color: #666;
+    line-height: 1.4;
+}
+
+.error-message {
+    color: #dc3545;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    background-color: #f8d7da;
+    border-radius: 4px;
+    text-align: center;
+}
