@@ -4,9 +4,7 @@
 		<meta charset="utf-8">
 		<title>Les Bonnes Pièces</title>
 		<link rel="stylesheet" href="styles.css">
-		<!-- <script type="module" src="pieces.js" defer></script> -->
-		<script type="module" src="./pieces2.js" defer></script><!--Lefait d'ajouter ici type="module" permet de ne pas avoir a ajouter d'autres balises script dnas le html et de pouvoir utiliser les import et export de fonctions entre les fichiers (toujours penser quand on veux utiliser des fonctions entre foichiers a utiliser tout en haut du fichier où l'on veux exeporter la fonction : import { nom de la fonction a importer } fromn "chemin du ficer où se triuve la fonction à importer") et de mettre export devant la declaration de la fonctkon que l'on veux importer-->
-
+		<script type="module" src="pieces2.js" defer></script>
 	</head>
 	<body>
 		<header>
@@ -19,30 +17,29 @@
 				<h3>Filtres</h3>
 				<button class="btn-trier">Trier par prix croissant</button>
 				<br>
-				<button class="btn-filter">Filtrer les pièces non abordables</button>
+				<button class="btn-filtrer">Filtrer les pièces non abordables</button>
 				<br>
-				<button class="btn-decroissant">Trier par prix décroissant</button>
+				<button class="btn-trier">Trier par prix décroissant</button>
 				<br>
-				<button class="btn-nodescription">Filtrer les pièces sans description</button>
+				<button class="btn-trier">Filtrer les pièces sans description</button>
 				<br>
-				<input type="range" name="prix-max" id="prix-max" min="0" max="60" step="5">
+			
+				<input type="range" id="prix-min" min="0" max="100" step="5" value="0">
 			</section>
 
 			<!-- Fiches produits -->
 			<section class="fiches">
-				<div class="abordables">
-					<p>Pièces abordables</p>
-				</div>
-				<div class="disponible">
-					<p>Pièces disponibles</p>
-				</div>
-				<!-- Section des avis -->
-			<!-- <article class="avis">
-				<button class="btn-avis">Afficher les avis</button>
-			</article> -->
 			</section>
-			
-			
+
+			<!-- Listes -->
+			<div class="abordables">
+				<h2>Pièces abordables</h2>
+				<ul></ul>
+			</div>
+			<div class="disponible">
+				<h2>Pièces disponibles</h2>
+				<ul></ul>
+			</div>
 		</main>
 	</body>
 </html>
