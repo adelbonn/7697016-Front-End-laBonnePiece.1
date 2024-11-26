@@ -5,7 +5,8 @@
 		<title>Les Bonnes Pièces</title>
 		<link rel="stylesheet" href="styles.css">
 		<!-- <script type="module" src="pieces.js" defer></script> -->
-		<script src="./pieces2.js" defer></script>
+		<script type="module" src="./pieces2.js" defer></script><!--Lefait d'ajouter ici type="module" permet de ne pas avoir a ajouter d'autres balises script dnas le html et de pouvoir utiliser les import et export de fonctions entre les fichiers (toujours penser quand on veux utiliser des fonctions entre foichiers a utiliser tout en haut du fichier où l'on veux exeporter la fonction : import { nom de la fonction a importer } fromn "chemin du ficer où se triuve la fonction à importer") et de mettre export devant la declaration de la fonctkon que l'on veux importer-->
+
 	</head>
 	<body>
 		<header>
@@ -35,7 +36,13 @@
 				<div class="disponible">
 					<p>Pièces disponibles</p>
 				</div>
+				<!-- Section des avis -->
+			<!-- <article class="avis">
+				<button class="btn-avis">Afficher les avis</button>
+			</article> -->
 			</section>
+			
+			
 		</main>
 	</body>
 </html>

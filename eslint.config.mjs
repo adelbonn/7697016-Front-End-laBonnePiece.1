@@ -1,30 +1,29 @@
-import global from"global";
-export default{extends:[global.eslintConfig]};
-
-import {spellcheck} from "eslint-plugin-spellcheck";
+import globals from 'globals';
+import spellcheck from 'eslint-plugin-spellcheck';
 
 /** @type {import('eslint').Linter.Config[]} */
-
-// export default [
-    {files:["**/*.js"],
-        langageOptions: {
+export default [
+    {
+        files: ["**/*.js"],
+        languageOptions: {
             ecmaVersion: "latest",
             sourceType: "module",
-            globals: globals.browser,
+            globals: globals.browser
         },
         plugins: {
-            spellcheck,
+            spellcheck
         },
         rules: {
-            "no-unused-vars":"warn",
-            "no-console":"warn",
-            "semi":["error", "always"],
-            "quotes":["error", "double"],
+            "no-unused-vars": "warn",
+            "no-console": "warn",
+            "semi": ["error", "always"],
+            "quotes": ["error", "double"],
             "no-undef": "error",
-            "spellcheck/spell-checker": 
-            ["warn",
-                {comments:false,
-                    strings:false,
+            "spellcheck/spell-checker": [
+                "warn",
+                {
+                    comments: false,
+                    strings: false,
                     identifiers: true,
                     minLength: 3
                 }

@@ -21,6 +21,8 @@
     "http-server": "^14.1.1"
   },
   "devDependencies": {
-    "eslint": "^9.14.0"
+    "eslint": "^9.14.0",
+    "eslint-plugin-spellcheck": "^0.0.20",
+    "globals": "^15.12.0"
   }
 }
