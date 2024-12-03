@@ -1,5 +1,6 @@
 // Import de la fonction qui gère les avis
-import { ajoutListenerAvis } from "./avis.js";
+import { ajoutListenerAvis,  ajoutListenerEnvoyerAvis } from "./avis.js";
+
 
 /**
  * Fonction principale asynchrone qui gère le chargement et l'affichage des pièces
@@ -16,13 +17,16 @@ async function initialiserPieces() {
         console.log("📥 Données reçues de l'API:", pieces);
         
         // Initialisation de l'interface
-        afficherPieces(pieces);
-        console.log("🎯 Appel de afficherListesPieces");
-        afficherListesPieces(pieces);
         initialiserBoutonsTri(pieces);
         initialiserBoutonsFiltrage(pieces);
         initialiserInputRange(pieces);
+        afficherPieces(pieces);
+        console.log("🎯 Appel de afficherListesPieces");
+        afficherListesPieces(pieces);
         
+
+        //initialisation du formualire d'avis
+        ajoutListenerEnvoyerAvis();
         // Ajout des listeners pour les avis
         ajoutListenerAvis();
 
